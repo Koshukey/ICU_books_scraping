@@ -30,10 +30,3 @@ search_word = gets.chomp
 
 
 search_books(search_word)
-
-
-
-//*[@id="main_list"]/table[1]/tbody/tr/td[4]/span/a/strong
-//*[@id="main_list"]/table[2]/tbody/tr/td[4]/span/a/strong
-
-//*[@id="main_list"]/table[1]/tbody/tr/td[4]/span/a/strong
