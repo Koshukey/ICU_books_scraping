@@ -29,8 +29,20 @@ def search_books(search_word)
 
 end
 
+
+def search_history(search_words)
+  search_words.each do |search_word|
+    puts search_word
+  end
+end
+
 while true do
   puts "調べたい本を入力してください"
   search_word = gets.chomp
+  search_words = []
+  search_words << search_word
+  binding.pry
   search_books(search_word)
+  puts "---------検索履歴-------------"
+  search_history(search_words)
 end
