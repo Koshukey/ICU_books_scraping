@@ -2,12 +2,13 @@ require 'selenium-webdriver'
 require 'pry'
 require 'mechanize'
 
+def search_books(search_word)
   puts "-------検索でヒットした本一覧-------"
 
   driver = Selenium::WebDriver.for :chrome #ドライバ選択
   driver.navigate.to "https://opac.icu.ac.jp/" #移動サイト指定
   search_form = driver.find_element(:name,"kywd1_exp")
-  search_form.send_keys("タンパク質")
+  search_form.send_keys(search_word)
   #検索フォームに入力
   driver.find_element(:xpath, '//*[@id="file_exp2"]').click
   #日本語の本にチェックボックス
@@ -21,28 +22,30 @@ require 'mechanize'
 
   sleep(5)
 
-puts driver.find_element(:xpath,'//*[@id="enclose_bhold"]/div/table/tbody/tr[2]/td[3]').text
-puts driver.find_element(:xpath,'(//*[@id="enclose_bhold"]/div/table/tbody/tr[2]/td[3])[1]').text
-puts driver.find_element(:xpath,'(//*[@id="enclose_bhold"]/div/table/tbody/tr[2]/td[3])[2]').text
-puts driver.find_element(:xpath,'(//*[@id="enclose_bhold"]/div/table/tbody/tr[2]/td[3])[3]').text
-puts driver.find_element(:xpath,'(//*[@id="enclose_bhold"]/div/table/tbody/tr[2]/td[3])[4]').text
-puts driver.find_element(:xpath,'(//*[@id="enclose_bhold"]/div/table/tbody/tr[2]/td[3])[5]').text
+
+  book_title_head_xpath = '(//*[@id="bb_ttl"]/a)['
+  book_title_last_xpath = ']'
+  book_number_head_xpath = '(//*[@id="enclose_bhold"]/div/table/tbody/tr[2]/td[3])['
+  book_number_last_xpath = ']'
+  line = "---------------------------------------------"
+
+  i = 3
+
+  while i <21 do
+    book_title_xpath = "#{book_title_head_xpath}" +  "#{i}"  +"#{book_title_last_xpath}"
+    book_number_xpath = "#{book_number_head_xpath}" + "#{i}" + "#{book_number_last_xpath}"
+    puts line
+    puts driver.find_element(:xpath, "#{book_title_xpath}").text
+    puts driver.find_element(:xpath, "#{book_number_xpath}").text
+    puts line
+    i += 1
+
+  end
+end
 
 
-
-# agent = Mechanize.new
-# agent.user_agent_alias = 'Windows IE 9'
-# scraping_page = 'https://opac.icu.ac.jp/opac/opac_list.cgi'
-
-
-# # binding.pry
-# current_page = agent.get(scraping_page)
-# binding.pry
-# book_number_boxes = current_page.search('//*[@id="enclose_bhold"]/div/table/tbody/tr[2]/td[3]')
-
-# book_number_boxes.each do |book_number|
-
-  sleep(3)
-  puts "---------------------------------"
-
-
+  while true do
+    puts "調べたい本を入力してください"
+      search_word = gets.chomp
+    search_books(search_word)
+  end
